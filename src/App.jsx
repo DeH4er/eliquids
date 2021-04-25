@@ -1,8 +1,8 @@
-import { Button } from "@chakra-ui/button";
+import RecipeEdit from "RecipeEdit";
 import React from "react";
 
 function App() {
-  return <Button>iaoeu</Button>;
+  return <RecipeEdit />;
 }
 
 export default App;

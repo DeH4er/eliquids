@@ -11,6 +11,16 @@ const theme = extendTheme({
     initialColorMode: "dark",
     useSystemColorMode: false,
   },
+  components: {
+    FormLabel: {
+      baseStyle: {
+        opacity: ".6",
+        fontSize: "smaller",
+        fontWeight: "bold",
+      },
+      defaultProps: {},
+    },
+  },
 });
 
 ReactDOM.render(
