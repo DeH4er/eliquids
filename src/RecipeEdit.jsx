@@ -24,6 +24,7 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
+import { useHistory, useLocation } from "react-router-dom";
 
 const EditRecipeContext = React.createContext(null);
 
@@ -292,14 +293,19 @@ function RecipeEdit() {
 
 function RecipeEditContainer() {
   const [page, setPage] = useState(0);
+  const { state = {} } = useLocation();
+  const { recipe = null } = state;
+
   const methods = useForm({
     defaultValues: {
-      name: "",
-      desiredPG: 30,
-      desiredVG: 70,
-      flavors: [],
+      name: recipe?.name ?? "",
+      desiredPG: recipe?.desiredPG ?? 30,
+      desiredVG: recipe?.desiredVG ?? 70,
+      flavors: recipe?.flavors ?? [],
     },
   });
+  const isNew = recipe === null;
+  const history = useHistory();
 
   function nextPage() {
     if (page > 1) {
@@ -318,7 +324,7 @@ function RecipeEditContainer() {
   }
 
   function submit(recipe) {
-    console.log(recipe);
+    history.push("/recipe/list");
   }
 
   return (
