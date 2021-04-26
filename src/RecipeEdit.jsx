@@ -1,55 +1,32 @@
 import {
-  Box,
   Button,
   CircularProgress,
   CircularProgressLabel,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
   HStack,
-  Input,
-  NumberInput,
-  NumberInputField,
+  LightMode,
   Radio,
   RadioGroup,
   Text,
   VStack,
 } from "@chakra-ui/react";
+import Pager from "components/Pager";
+import InputControl from "form/InputControl";
+import NumberInputControl from "form/NumberInputControl";
 import React, { useContext, useState } from "react";
 import {
   FormProvider,
-  useController,
   useFieldArray,
   useForm,
   useFormContext,
 } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
+import { useRecipeContext } from "RecipeContext";
 
 const EditRecipeContext = React.createContext(null);
 
 const FLAVOR_TYPES = ["PG", "VG"];
-
-function ControlledNumberInput(props) {
-  const {
-    field: { ref, onBlur, onChange, value },
-  } = useController({
-    name: props.name,
-    control: props.control,
-  });
-
-  return (
-    <NumberInput
-      {...props}
-      onBlur={onBlur}
-      onChange={onChange}
-      value={value}
-      ref={ref}
-    >
-      {props.children}
-    </NumberInput>
-  );
-}
 
 function Header() {
   const { page } = useContext(EditRecipeContext);
@@ -91,7 +68,7 @@ function Header() {
       </Flex>
       <CircularProgress
         value={((page + 1) / 2) * 100}
-        color="green.400"
+        color="teal.500"
         size="6.5rem"
       >
         <CircularProgressLabel>{page + 1} of 2</CircularProgressLabel>
@@ -100,81 +77,44 @@ function Header() {
   );
 }
 
-function Pager({ children, page, style }) {
-  return (
-    <Flex style={style}>
-      <Flex
-        style={{
-          width: "100vw",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {children.map((c, pageIndex) => (
-          <Box
-            key={pageIndex}
-            style={{
-              left: `${(pageIndex - page) * 100}vw`,
-              transition: "all .3s ease",
-              height: "100%",
-              position: "absolute",
-              overflowY: "auto",
-              overflowX: "hidden",
-              top: 0,
-              width: "100vw",
-              flexShrink: 0,
-            }}
-          >
-            {c}
-          </Box>
-        ))}
-      </Flex>
-    </Flex>
-  );
-}
-
 function OverallPage() {
-  const { control, register, formState, setValue } = useFormContext();
+  const { control } = useFormContext();
 
   return (
     <VStack flex={1} width="full" paddingX="4" spacing="4">
-      <FormControl isInvalid={formState.errors.name}>
-        <FormLabel>Liquid name</FormLabel>
-        <Input
-          placeholder="Liquid name..."
-          {...register("name", { required: true })}
-        />
-      </FormControl>
+      <InputControl
+        control={control}
+        rules={{ required: true }}
+        label="Liquid name"
+        name="name"
+        placeholder="Liquid name..."
+      />
 
-      <FormControl isInvalid={formState.errors.desiredPG}>
-        <FormLabel>Desired PG</FormLabel>
-        <ControlledNumberInput
-          control={control}
-          name="desiredPG"
-          min={0}
-          max={100}
-        >
-          <NumberInputField placeholder="Desired PG..." />
-        </ControlledNumberInput>
-      </FormControl>
+      <NumberInputControl
+        control={control}
+        rules={{ required: true }}
+        label="Desired PG"
+        name="desiredPG"
+        placeholder="Desired PG..."
+        min={0}
+        max={100}
+      />
 
-      <FormControl isInvalid={formState.errors.desiredVG}>
-        <FormLabel>Desired VG</FormLabel>
-        <ControlledNumberInput
-          control={control}
-          name="desiredVG"
-          min={0}
-          max={100}
-        >
-          <NumberInputField placeholder="Desired VG..." />
-        </ControlledNumberInput>
-      </FormControl>
+      <NumberInputControl
+        control={control}
+        rules={{ required: true }}
+        label="Desired VG"
+        name="desiredVG"
+        placeholder="Desired VG..."
+        min={0}
+        max={100}
+      />
     </VStack>
   );
 }
 
 function FlavorPage() {
-  const { control, register, formState, setValue } = useFormContext();
+  const { control, register, setValue } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "flavors",
@@ -201,27 +141,25 @@ function FlavorPage() {
       <VStack spacing="8" width="full">
         {fields.map((field, index) => (
           <VStack width="full" key={field.id}>
-            <FormControl isInvalid={formState.errors.flavors?.[index]?.name}>
-              <FormLabel>Name</FormLabel>
-              <Input
-                placeholder="Flavor name..."
-                {...register(`flavors.${index}.name`, { required: true })}
-                defaultValue={field.name}
-              />
-            </FormControl>
+            <InputControl
+              control={control}
+              rules={{ required: true }}
+              label="Flavor name"
+              name={`flavors.${index}.name`}
+              defaultValue={field.name}
+              placeholder="Flavor name..."
+            />
 
-            <FormControl isInvalid={formState.errors.flavors?.[index]?.percent}>
-              <FormLabel>Flavor percent</FormLabel>
-              <ControlledNumberInput
-                control={control}
-                name={`flavors.${index}.percent`}
-                min={0}
-                max={100}
-                defaultValue={field.percent}
-              >
-                <NumberInputField placeholder="Flavor percent..." />
-              </ControlledNumberInput>
-            </FormControl>
+            <NumberInputControl
+              control={control}
+              rules={{ required: true }}
+              label="Flavor percent"
+              name={`flavors.${index}.percent`}
+              defaultValue={field.percent}
+              placeholder="Flavor percent..."
+              min={0}
+              max={100}
+            />
 
             <HStack justifyContent="space-between" width="full">
               <RadioGroup
@@ -273,9 +211,11 @@ function PageControls() {
       )}
 
       {page === 1 && (
-        <Button flex="1" type="submit">
-          Finish
-        </Button>
+        <LightMode>
+          <Button flex="1" type="submit" colorScheme="teal">
+            Finish
+          </Button>
+        </LightMode>
       )}
     </HStack>
   );
@@ -295,6 +235,7 @@ function RecipeEditContainer() {
   const [page, setPage] = useState(0);
   const { state = {} } = useLocation();
   const { recipe = null } = state;
+  const { service } = useRecipeContext();
 
   const methods = useForm({
     defaultValues: {
@@ -323,8 +264,10 @@ function RecipeEditContainer() {
     setPage(page - 1);
   }
 
-  function submit(recipe) {
-    history.push("/recipe/list");
+  async function submit(newRecipe) {
+    const saveFn = isNew ? service.createRecipe : service.updateRecipe;
+    const savedRecipe = await saveFn({ ...newRecipe, id: recipe?.id });
+    history.push(`/recipe/${savedRecipe.id}`, { recipe: savedRecipe });
   }
 
   return (

@@ -1,11 +1,7 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-  useRouteMatch,
-} from "react-router-dom";
+import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
+import RecipeProvider from "RecipeContext";
+import RecipeDetail from "RecipeDetail";
 import RecipeEdit from "RecipeEdit";
 import RecipeList from "RecipeList";
 
@@ -13,7 +9,7 @@ function RecipeView() {
   const { path } = useRouteMatch();
 
   return (
-    <Router>
+    <RecipeProvider>
       <Switch>
         <Route exact path={path}>
           <Redirect to={`${path}/list`} />
@@ -27,8 +23,11 @@ function RecipeView() {
         <Route path={`${path}/:id/edit`}>
           <RecipeEdit />
         </Route>
+        <Route exact path={`${path}/:id`}>
+          <RecipeDetail />
+        </Route>
       </Switch>
-    </Router>
+    </RecipeProvider>
   );
 }
 

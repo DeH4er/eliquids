@@ -9,61 +9,50 @@ import {
   Wrap,
   Button,
   HStack,
+  LightMode,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-
-const recipes = [
-  {
-    id: 0,
-    name: "Sweet melon",
-    desiredPG: 30,
-    desiredVG: 70,
-    flavors: [
-      { _key: 0, name: "Melon", percent: 15 },
-      { _key: 1, name: "Donut", percent: 3 },
-    ],
-  },
-  {
-    id: 1,
-    name: "Lemon cake",
-    desiredPG: 30,
-    desiredVG: 70,
-    flavors: [
-      { _key: 0, name: "Lemon Cake", percent: 6 },
-      { _key: 1, name: "Melon", percent: 4 },
-      { _key: 1, name: "Donut", percent: 5 },
-    ],
-  },
-  {
-    id: 2,
-    name: "Pure donut",
-    desiredPG: 30,
-    desiredVG: 70,
-    flavors: [{ _key: 0, name: "Donut", percent: 15 }],
-  },
-];
+import { useRecipeContext } from "RecipeContext";
 
 function RecipeListContainer() {
   const history = useHistory();
+  const { service } = useRecipeContext();
+  const [recipes, setRecipes] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const loadedRecipes = await service.getRecipes();
+      setRecipes(loadedRecipes);
+    })();
+  }, [service]);
 
   function onRecipeClick(recipe) {
-    history.push(`/recipe/${recipe.id}/edit`, { recipe });
+    history.push(`/recipe/${recipe.id}`, { recipe });
   }
 
   return (
-    <Box flex="1" padding="4">
-      <VStack spacing="4">
-        <HStack width="full">
-          <Heading size="xl" width="full">
-            My recipes
-          </Heading>
-          <Link to="/recipe/create">
-            <Button>
+    <VStack spacing="4" flex="1" overflow="auto">
+      <HStack width="full" padding="4" paddingBottom="0">
+        <Heading size="xl" width="full">
+          My recipes
+        </Heading>
+        <Link to="/recipe/create">
+          <LightMode>
+            <Button colorScheme="teal">
               <AddIcon />
             </Button>
-          </Link>
-        </HStack>
+          </LightMode>
+        </Link>
+      </HStack>
+
+      <VStack
+        flex="1"
+        overflow="auto"
+        width="full"
+        paddingX="4"
+        paddingBottom="4"
+      >
         {recipes.map((recipe) => (
           <VStack
             key={recipe.id}
@@ -92,7 +81,7 @@ function RecipeListContainer() {
           </VStack>
         ))}
       </VStack>
-    </Box>
+    </VStack>
   );
 }
 
