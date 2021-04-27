@@ -8,12 +8,12 @@ import { useForm, useWatch } from "react-hook-form";
 import { useConsumableContext } from "ConsumableContext";
 import { useHistory, useLocation } from "react-router";
 
-function FlavorEdit({ onSubmit }) {
+function FlavorEdit({ onSubmit, consumable }) {
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      name: "",
-      amount: 10,
-      flavorType: "PG",
+      name: consumable.name ?? "",
+      amount: consumable.amount ?? 10,
+      flavorType: consumable.type ?? "PG",
     },
   });
 
@@ -62,13 +62,13 @@ function FlavorEdit({ onSubmit }) {
   );
 }
 
-function NicotineEdit({ onSubmit }) {
+function NicotineEdit({ onSubmit, consumable }) {
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      amount: 10,
-      pg: 50,
-      vg: 50,
-      strength: 18,
+      amount: consumable.amount ?? 10,
+      pg: consumable.pg ?? 50,
+      vg: consumable.vg ?? 50,
+      strength: consumable.strength ?? 18,
     },
   });
 
@@ -127,10 +127,10 @@ function NicotineEdit({ onSubmit }) {
   );
 }
 
-function PGEdit({ onSubmit }) {
+function PGEdit({ onSubmit, consumable }) {
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      amount: 10,
+      amount: consumable.amount ?? 10,
     },
   });
 
@@ -160,10 +160,10 @@ function PGEdit({ onSubmit }) {
   );
 }
 
-function VGEdit({ onSubmit }) {
+function VGEdit({ onSubmit, consumable }) {
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      amount: 10,
+      amount: consumable.amount ?? 10,
     },
   });
 
@@ -246,10 +246,18 @@ function ConsumableEditContainer() {
             name="type"
           />
 
-          {type === "flavor" && <FlavorEdit onSubmit={submit} />}
-          {type === "nicotine" && <NicotineEdit onSubmit={submit} />}
-          {type === "pg" && <PGEdit onSubmit={submit} />}
-          {type === "vg" && <VGEdit onSubmit={submit} />}
+          {type === "flavor" && (
+            <FlavorEdit onSubmit={submit} consumable={consumable} />
+          )}
+          {type === "nicotine" && (
+            <NicotineEdit onSubmit={submit} consumable={consumable} />
+          )}
+          {type === "pg" && (
+            <PGEdit onSubmit={submit} consumable={consumable} />
+          )}
+          {type === "vg" && (
+            <VGEdit onSubmit={submit} consumable={consumable} />
+          )}
         </VStack>
       </form>
     </VStack>
