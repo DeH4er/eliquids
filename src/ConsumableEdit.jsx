@@ -225,6 +225,13 @@ function ConsumableEditContainer() {
     });
   }
 
+  const consumableTypes = [
+    { key: "flavor", label: "Flavor" },
+    { key: "nicotine", label: "Nicotine" },
+    { key: "pg", label: "PG" },
+    { key: "vg", label: "VG" },
+  ];
+
   return (
     <VStack padding="4" spacing="4" alignItems="start" flex="1">
       <Heading size="xl">{isNew ? "Create" : "Edit"} consumable</Heading>
@@ -236,15 +243,12 @@ function ConsumableEditContainer() {
         <VStack spacing="4" alignItems="start" flex="1">
           <SelectControl
             label="Consumable type"
-            values={[
-              { value: "flavor", label: "Flavor" },
-              { value: "nicotine", label: "Nicotine" },
-              { value: "pg", label: "PG" },
-              { value: "vg", label: "VG" },
-            ]}
             control={control}
+            values={consumableTypes.map((c) => c.key)}
             name="type"
-          />
+          >
+            {(key) => consumableTypes.find((c) => c.key === key).label}
+          </SelectControl>
 
           {type === "flavor" && (
             <FlavorEdit onSubmit={submit} consumable={consumable} />

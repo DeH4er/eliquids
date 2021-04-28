@@ -26,6 +26,13 @@ let consumables = [
     type: "vg",
     amount: 1000,
   },
+  {
+    id: 4,
+    type: "flavor",
+    flavorType: "PG",
+    name: "Lemon Cake",
+    amount: 10,
+  },
 ];
 
 function getConsumables() {

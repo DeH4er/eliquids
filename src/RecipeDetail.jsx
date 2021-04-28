@@ -33,8 +33,8 @@ function RecipeDetail({ recipe }) {
 
       <Wrap width="full">
         {recipe.flavors.map((flavor) => (
-          <Tag key={flavor._key}>
-            {flavor.name} ({flavor.percent}%)
+          <Tag key={flavor.flavor.id}>
+            {flavor.flavor.name} ({flavor.percent}%)
           </Tag>
         ))}
       </Wrap>

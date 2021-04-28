@@ -17,15 +17,15 @@ import { useRecipeContext } from "RecipeContext";
 
 function RecipeListContainer() {
   const history = useHistory();
-  const { service } = useRecipeContext();
+  const { recipeService } = useRecipeContext();
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const loadedRecipes = await service.getRecipes();
+      const loadedRecipes = await recipeService.getRecipes();
       setRecipes(loadedRecipes);
     })();
-  }, [service]);
+  }, [recipeService]);
 
   function onRecipeClick(recipe) {
     history.push(`/recipe/${recipe.id}`, { recipe });
@@ -73,8 +73,8 @@ function RecipeListContainer() {
 
             <Wrap width="full">
               {recipe.flavors.map((flavor) => (
-                <Tag key={flavor._key}>
-                  {flavor.name} ({flavor.percent}%)
+                <Tag key={flavor.flavor.id}>
+                  {flavor.flavor.name} ({flavor.percent}%)
                 </Tag>
               ))}
             </Wrap>

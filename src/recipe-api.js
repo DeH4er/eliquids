@@ -6,8 +6,8 @@ let recipes = [
     desiredPG: 30,
     desiredVG: 70,
     flavors: [
-      { _key: 0, name: "Melon", percent: 15 },
-      { _key: 1, name: "Donut", percent: 3 },
+      { flavor: { id: 0, name: "Melon" }, percent: 15 },
+      { flavor: { id: 1, name: "Donut" }, percent: 3 },
     ],
   },
   {
@@ -16,9 +16,9 @@ let recipes = [
     desiredPG: 30,
     desiredVG: 70,
     flavors: [
-      { _key: 0, name: "Lemon Cake", percent: 6 },
-      { _key: 1, name: "Melon", percent: 4 },
-      { _key: 2, name: "Donut", percent: 5 },
+      { flavor: { id: 0, name: "Lemon Cake" }, percent: 6 },
+      { flavor: { id: 1, name: "Melon" }, percent: 4 },
+      { flavor: { id: 2, name: "Donut" }, percent: 5 },
     ],
   },
   {
@@ -26,35 +26,35 @@ let recipes = [
     name: "Pure donut",
     desiredPG: 30,
     desiredVG: 70,
-    flavors: [{ _key: 0, name: "Donut", percent: 15 }],
+    flavors: [{ flavor: { id: 0, name: "Donut" }, percent: 15 }],
   },
   {
     id: 3,
     name: "Pure donut",
     desiredPG: 30,
     desiredVG: 70,
-    flavors: [{ _key: 0, name: "Donut", percent: 15 }],
+    flavors: [{ flavor: { id: 0, name: "Donut" }, percent: 15 }],
   },
   {
     id: 4,
     name: "Pure donut",
     desiredPG: 30,
     desiredVG: 70,
-    flavors: [{ _key: 0, name: "Donut", percent: 15 }],
+    flavors: [{ flavor: { id: 0, name: "Donut" }, percent: 15 }],
   },
   {
     id: 5,
     name: "Pure donut",
     desiredPG: 30,
     desiredVG: 70,
-    flavors: [{ _key: 0, name: "Donut", percent: 15 }],
+    flavors: [{ flavor: { id: 0, name: "Donut" }, percent: 15 }],
   },
   {
     id: 6,
     name: "Pure donut",
     desiredPG: 30,
     desiredVG: 70,
-    flavors: [{ _key: 0, name: "Donut", percent: 15 }],
+    flavors: [{ flavor: { id: 0, name: "Donut" }, percent: 15 }],
   },
 ];
 

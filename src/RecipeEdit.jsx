@@ -14,7 +14,8 @@ import {
 import Pager from "components/Pager";
 import InputControl from "form/InputControl";
 import NumberInputControl from "form/NumberInputControl";
-import React, { useContext, useState } from "react";
+import SelectControl from "form/SelectControl";
+import React, { useContext, useEffect, useState } from "react";
 import {
   FormProvider,
   useFieldArray,
@@ -114,14 +115,16 @@ function OverallPage() {
 }
 
 function FlavorPage() {
-  const { control, register, setValue } = useFormContext();
+  const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "flavors",
   });
 
+  const { flavors } = useContext(EditRecipeContext);
+
   function addFlavor() {
-    append({ name: "", percent: 5, type: "PG" });
+    append({ flavor: flavors[0], percent: 10 });
   }
 
   function removeFlavor(index) {
@@ -140,43 +143,28 @@ function FlavorPage() {
 
       <VStack spacing="8" width="full">
         {fields.map((field, index) => (
-          <VStack width="full" key={field.id}>
-            <InputControl
+          <VStack width="full" key={field.id} alignItems="start">
+            <SelectControl
               control={control}
-              rules={{ required: true }}
-              label="Flavor name"
-              name={`flavors.${index}.name`}
-              defaultValue={field.name}
-              placeholder="Flavor name..."
-            />
+              name={`flavors.${index}.flavor`}
+              label="Flavor"
+              values={flavors}
+              compare={(f1, f2) => f1.id === f2.id}
+              defaultValue={field.flavor}
+            >
+              {(flavor) => flavor.name}
+            </SelectControl>
 
             <NumberInputControl
               control={control}
-              rules={{ required: true }}
-              label="Flavor percent"
+              label="Percent (%)"
+              placeholder="Percent..."
               name={`flavors.${index}.percent`}
-              defaultValue={field.percent}
-              placeholder="Flavor percent..."
               min={0}
               max={100}
-            />
-
-            <HStack justifyContent="space-between" width="full">
-              <RadioGroup
-                {...register(`flavors.${index}.type`)}
-                defaultValue={field.type}
-                onChange={(v) => setValue(`flavors.${index}.type`, v)}
-              >
-                <HStack>
-                  {FLAVOR_TYPES.map((flavorType) => (
-                    <Radio value={flavorType} key={flavorType}>
-                      {flavorType}
-                    </Radio>
-                  ))}
-                </HStack>
-              </RadioGroup>
-              <Button onClick={() => removeFlavor(index)}>Delete</Button>
-            </HStack>
+              defaultValue={field.percent}
+            ></NumberInputControl>
+            <Button onClick={() => removeFlavor(index)}>Delete</Button>
           </VStack>
         ))}
       </VStack>
@@ -234,18 +222,19 @@ function RecipeEdit() {
 function RecipeEditContainer() {
   const [page, setPage] = useState(0);
   const { state = {} } = useLocation();
-  const { recipe = null } = state;
-  const { service } = useRecipeContext();
+  const { recipe = {} } = state;
+  const { recipeService, consumablesService } = useRecipeContext();
+  const [flavors, setFlavors] = useState([]);
 
   const methods = useForm({
     defaultValues: {
-      name: recipe?.name ?? "",
-      desiredPG: recipe?.desiredPG ?? 30,
-      desiredVG: recipe?.desiredVG ?? 70,
-      flavors: recipe?.flavors ?? [],
+      name: recipe.name ?? "",
+      desiredPG: recipe.desiredPG ?? 30,
+      desiredVG: recipe.desiredVG ?? 70,
+      flavors: recipe.flavors ?? [],
     },
   });
-  const isNew = recipe === null;
+  const isNew = !recipe.id;
   const history = useHistory();
 
   function nextPage() {
@@ -264,14 +253,23 @@ function RecipeEditContainer() {
     setPage(page - 1);
   }
 
+  useEffect(() => {
+    (async () => {
+      const flavors = await consumablesService.getConsumablesByType("flavor");
+      setFlavors(flavors);
+    })();
+  }, [consumablesService]);
+
   async function submit(newRecipe) {
-    const saveFn = isNew ? service.createRecipe : service.updateRecipe;
-    const savedRecipe = await saveFn({ ...newRecipe, id: recipe?.id });
+    const saveFn = isNew
+      ? recipeService.createRecipe
+      : recipeService.updateRecipe;
+    const savedRecipe = await saveFn({ ...newRecipe, id: recipe.id });
     history.push(`/recipe/${savedRecipe.id}`, { recipe: savedRecipe });
   }
 
   return (
-    <EditRecipeContext.Provider value={{ page, nextPage, prevPage }}>
+    <EditRecipeContext.Provider value={{ page, nextPage, prevPage, flavors }}>
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(submit)}
