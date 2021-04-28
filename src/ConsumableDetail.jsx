@@ -55,7 +55,9 @@ function ConsumableDetail({ consumable }) {
       </HStack>
 
       <Text>
-        {getHeader(consumable)}, {getDescription(consumable)}
+        {[getHeader(consumable), getDescription(consumable)]
+          .filter(Boolean)
+          .join(", ")}
       </Text>
     </VStack>
   );
