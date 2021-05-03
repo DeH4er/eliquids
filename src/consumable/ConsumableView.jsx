@@ -1,34 +1,34 @@
 import React from "react";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
-import RecipeProvider from "RecipeContext";
-import RecipeDetail from "RecipeDetail";
-import RecipeEdit from "RecipeEdit";
-import RecipeList from "RecipeList";
+import ConsumableProvider from "./ConsumableContext";
+import ConsumableEdit from "./ConsumableEdit";
+import ConsumableList from "./ConsumableList";
+import ConsumableDetail from "./ConsumableDetail";
 
-function RecipeView() {
+function ConsumableView() {
   const { path } = useRouteMatch();
 
   return (
-    <RecipeProvider>
+    <ConsumableProvider>
       <Switch>
         <Route exact path={path}>
           <Redirect to={`${path}/list`} />
         </Route>
         <Route path={`${path}/list`}>
-          <RecipeList />
+          <ConsumableList />
         </Route>
         <Route path={`${path}/create`}>
-          <RecipeEdit />
+          <ConsumableEdit />
         </Route>
         <Route path={`${path}/:id/edit`}>
-          <RecipeEdit />
+          <ConsumableEdit />
         </Route>
         <Route exact path={`${path}/:id`}>
-          <RecipeDetail />
+          <ConsumableDetail />
         </Route>
       </Switch>
-    </RecipeProvider>
+    </ConsumableProvider>
   );
 }
 
-export default RecipeView;
+export default ConsumableView;

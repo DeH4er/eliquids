@@ -2,9 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import { Button, VStack } from "@chakra-ui/react";
 
-import MixtureView from "MixtureView";
-import RecipeView from "RecipeView";
-import ConsumableView from "ConsumableView";
+import RecipeView from "./recipe/RecipeView";
+import ConsumableView from "./consumable/ConsumableView";
 
 function App() {
   return (
@@ -15,9 +14,6 @@ function App() {
             <Link to="/recipe">
               <Button>Recipes</Button>
             </Link>
-            <Link to="/mixture">
-              <Button>Mixtures</Button>
-            </Link>
             <Link to="/consumable">
               <Button>Consumables</Button>
             </Link>
@@ -25,9 +21,6 @@ function App() {
         </Route>
         <Route path="/recipe">
           <RecipeView />
-        </Route>
-        <Route path="/mixture">
-          <MixtureView />
         </Route>
         <Route path="/consumable">
           <ConsumableView />

@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { useRecipeContext } from "RecipeContext";
+import { useRecipeContext } from "./RecipeContext";
 
 function RecipeListContainer() {
   const history = useHistory();

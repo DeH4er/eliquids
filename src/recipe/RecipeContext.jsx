@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import recipeService from "./recipe-api";
-import consumablesService from "./consumable-api";
+import consumablesService from "../consumable/consumable-api";
 
 export const Context = React.createContext({
   recipeService,

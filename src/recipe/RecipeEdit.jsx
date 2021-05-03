@@ -6,15 +6,13 @@ import {
   Heading,
   HStack,
   LightMode,
-  Radio,
-  RadioGroup,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import Pager from "components/Pager";
-import InputControl from "form/InputControl";
-import NumberInputControl from "form/NumberInputControl";
-import SelectControl from "form/SelectControl";
+import InputControl from "../components/form/InputControl";
+import NumberInputControl from "../components/form/NumberInputControl";
+import SelectControl from "../components/form/SelectControl";
 import React, { useContext, useEffect, useState } from "react";
 import {
   FormProvider,
@@ -23,11 +21,9 @@ import {
   useFormContext,
 } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
-import { useRecipeContext } from "RecipeContext";
+import { useRecipeContext } from "./RecipeContext";
 
 const EditRecipeContext = React.createContext(null);
-
-const FLAVOR_TYPES = ["PG", "VG"];
 
 function Header() {
   const { page } = useContext(EditRecipeContext);

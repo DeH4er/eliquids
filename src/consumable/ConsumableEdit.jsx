@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Heading, LightMode, VStack } from "@chakra-ui/react";
-import InputControl from "form/InputControl";
-import NumberInputControl from "form/NumberInputControl";
-import RadioControl from "form/RadioControl";
-import SelectControl from "form/SelectControl";
+import InputControl from "components/form/InputControl";
+import NumberInputControl from "components/form/NumberInputControl";
+import RadioControl from "components/form/RadioControl";
+import SelectControl from "components/form/SelectControl";
 import { useForm, useWatch } from "react-hook-form";
-import { useConsumableContext } from "ConsumableContext";
+import { useConsumableContext } from "./ConsumableContext";
 import { useHistory, useLocation } from "react-router";
 
 function FlavorEdit({ onSubmit, consumable }) {

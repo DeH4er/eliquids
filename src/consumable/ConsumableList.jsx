@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { useConsumableContext } from "ConsumableContext";
+import { useConsumableContext } from "./ConsumableContext";
 
 function Consumable({ consumable }) {
   function getHeader() {
