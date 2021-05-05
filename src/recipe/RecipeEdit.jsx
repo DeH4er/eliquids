@@ -34,7 +34,15 @@ function Header() {
     }
 
     if (page === 1) {
+      return "Nicotine";
+    }
+
+    if (page === 2) {
       return "Flavor";
+    }
+
+    if (page === 3) {
+      return "Summary";
     }
 
     return "";
@@ -46,7 +54,15 @@ function Header() {
     }
 
     if (page === 1) {
+      return "Properties of nicotine";
+    }
+
+    if (page === 2) {
       return "Mix your flavors";
+    }
+
+    if (page === 3) {
+      return "Check everything and make a liquid";
     }
 
     return "";
@@ -64,11 +80,11 @@ function Header() {
         <Text opacity=".6">{getDescription()}</Text>
       </Flex>
       <CircularProgress
-        value={((page + 1) / 2) * 100}
+        value={((page + 1) / 4) * 100}
         color="teal.500"
         size="6.5rem"
       >
-        <CircularProgressLabel>{page + 1} of 2</CircularProgressLabel>
+        <CircularProgressLabel>{page + 1} of 4</CircularProgressLabel>
       </CircularProgress>
     </Flex>
   );
@@ -106,6 +122,33 @@ function OverallPage() {
         min={0}
         max={100}
       />
+    </VStack>
+  );
+}
+
+function NicotinePage() {
+  const { control } = useFormContext();
+
+  return (
+    <VStack flex={1} width="full" paddingX="4" spacing="4">
+      <NumberInputControl
+        control={control}
+        rules={{ required: true }}
+        label="Desired strength"
+        name="nicotineStrength"
+        placeholder="Desired strength..."
+        min={0}
+      />
+
+      <SelectControl
+        control={control}
+        name="nicotine"
+        label="Nicotine"
+        values={[]}
+        compare={(f1, f2) => f1.id === f2.id}
+      >
+        {(nicotine) => `${nicotine.strength}, ${nicotine.vg}/${nicotine.pg}`}
+      </SelectControl>
     </VStack>
   );
 }
@@ -168,13 +211,29 @@ function FlavorPage() {
   );
 }
 
+function SummaryPage() {
+  return (
+    <VStack
+      flex={1}
+      width="full"
+      paddingX="4"
+      spacing="4"
+      alignItems="flex-end"
+    >
+      <Text>yeah</Text>
+    </VStack>
+  );
+}
+
 function Pages() {
   const { page } = useContext(EditRecipeContext);
 
   return (
     <Pager page={page} style={{ flex: 1 }}>
       <OverallPage />
+      <NicotinePage />
       <FlavorPage />
+      <SummaryPage />
     </Pager>
   );
 }
@@ -188,13 +247,13 @@ function PageControls() {
         Back
       </Button>
 
-      {page < 1 && (
+      {page < 3 && (
         <Button flex="1" onClick={nextPage}>
           Next
         </Button>
       )}
 
-      {page === 1 && (
+      {page === 3 && (
         <LightMode>
           <Button flex="1" type="submit" colorScheme="teal">
             Finish
@@ -227,6 +286,9 @@ function RecipeEditContainer() {
       name: recipe.name ?? "",
       desiredPG: recipe.desiredPG ?? 30,
       desiredVG: recipe.desiredVG ?? 70,
+      nicotineStrength: recipe.nicotineStrength ?? 2,
+      nicotinePG: recipe.nicotinePG ?? 50,
+      nicotineVG: recipe.nicotineVG ?? 50,
       flavors: recipe.flavors ?? [],
     },
   });
@@ -234,7 +296,7 @@ function RecipeEditContainer() {
   const history = useHistory();
 
   function nextPage() {
-    if (page > 1) {
+    if (page > 2) {
       return;
     }
 
