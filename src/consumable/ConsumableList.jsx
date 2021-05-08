@@ -1,12 +1,9 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Box } from "@chakra-ui/layout";
 import {
-  Flex,
   Heading,
   VStack,
   Text,
   Tag,
-  Wrap,
   Button,
   HStack,
   LightMode,

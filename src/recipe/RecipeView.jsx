@@ -2,8 +2,8 @@ import React from "react";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import RecipeProvider from "./RecipeContext";
 import RecipeDetail from "./RecipeDetail";
-import RecipeEdit from "./RecipeEdit";
 import RecipeList from "./RecipeList";
+import RecipeCreate from "./RecipeCreate";
 
 function RecipeView() {
   const { path } = useRouteMatch();
@@ -18,10 +18,7 @@ function RecipeView() {
           <RecipeList />
         </Route>
         <Route path={`${path}/create`}>
-          <RecipeEdit />
-        </Route>
-        <Route path={`${path}/:id/edit`}>
-          <RecipeEdit />
+          <RecipeCreate />
         </Route>
         <Route exact path={`${path}/:id`}>
           <RecipeDetail />

@@ -1,5 +1,4 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Box } from "@chakra-ui/layout";
 import {
   Flex,
   Heading,
@@ -67,7 +66,7 @@ function RecipeListContainer() {
             <Flex justifyContent="space-between" width="full">
               <Heading size="md">{recipe.name}</Heading>
               <Text opacity=".8">
-                {recipe.desiredVG}/{recipe.desiredPG}
+                {recipe.vg}/{recipe.pg}
               </Text>
             </Flex>
 

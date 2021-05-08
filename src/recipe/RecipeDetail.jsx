@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/button";
-import { Heading, Tag, Wrap, Text, LightMode } from "@chakra-ui/react";
+import { Heading, Tag, Wrap } from "@chakra-ui/react";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { VStack, HStack } from "@chakra-ui/layout";
@@ -12,23 +12,14 @@ function RecipeDetail({ recipe }) {
           {recipe.name}
         </Heading>
 
-        <Link
-          to={{
-            pathname: `/recipe/${recipe.id}/edit`,
-            state: { recipe },
-          }}
-        >
-          <Button>Edit</Button>
-        </Link>
-
         <Link to="/recipe">
           <Button>List</Button>
         </Link>
       </HStack>
 
       <Wrap width="full">
-        <Tag colorScheme="teal">VG {recipe.desiredVG}</Tag>
-        <Tag colorScheme="teal">PG {recipe.desiredPG}</Tag>
+        <Tag colorScheme="teal">VG {recipe.vg}</Tag>
+        <Tag colorScheme="teal">PG {recipe.pg}</Tag>
       </Wrap>
 
       <Wrap width="full">
@@ -38,20 +29,6 @@ function RecipeDetail({ recipe }) {
           </Tag>
         ))}
       </Wrap>
-
-      <Link
-        style={{ width: "100%" }}
-        to={{
-          pathname: "/mixture/create",
-          state: { mixture: { recipe } },
-        }}
-      >
-        <LightMode>
-          <Button width="full" colorScheme="teal">
-            Make a mixture
-          </Button>
-        </LightMode>
-      </Link>
     </VStack>
   );
 }

@@ -1,11 +1,6 @@
-const {
-  FormControl,
-  FormLabel,
-  Input,
-  propNames,
-} = require("@chakra-ui/react");
-const React = require("react");
-const { useController } = require("react-hook-form");
+import React from "react";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { useController } from "react-hook-form";
 
 function InputControl(props) {
   const {

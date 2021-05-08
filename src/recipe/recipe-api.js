@@ -1,60 +1,70 @@
 let id = 3;
 let recipes = [
   {
-    id: 0,
+    id: "0",
     name: "Sweet melon",
-    desiredPG: 30,
-    desiredVG: 70,
+    amount: 100,
+    pg: 30,
+    vg: 70,
+    nicotineStrength: 2,
     flavors: [
-      { flavor: { id: 0, name: "Melon" }, percent: 15 },
-      { flavor: { id: 1, name: "Donut" }, percent: 3 },
+      { flavor: { id: 1, name: "Melon" }, percent: 15 },
+      { flavor: { id: 4, name: "Donut" }, percent: 3 },
     ],
   },
   {
-    id: 1,
+    id: "1",
     name: "Lemon cake",
-    desiredPG: 30,
-    desiredVG: 70,
-    flavors: [
-      { flavor: { id: 0, name: "Lemon Cake" }, percent: 6 },
-      { flavor: { id: 1, name: "Melon" }, percent: 4 },
-      { flavor: { id: 2, name: "Donut" }, percent: 5 },
-    ],
+    amount: 100,
+    pg: 30,
+    vg: 70,
+    nicotineStrength: 2,
+    flavors: [{ flavor: { id: 1, name: "Donut" }, percent: 5 }],
   },
   {
-    id: 2,
+    id: "2",
     name: "Pure donut",
-    desiredPG: 30,
-    desiredVG: 70,
-    flavors: [{ flavor: { id: 0, name: "Donut" }, percent: 15 }],
+    amount: 100,
+    pg: 30,
+    vg: 70,
+    nicotineStrength: 2,
+    flavors: [{ flavor: { id: 4, name: "Donut" }, percent: 15 }],
   },
   {
-    id: 3,
+    id: "3",
     name: "Pure donut",
-    desiredPG: 30,
-    desiredVG: 70,
-    flavors: [{ flavor: { id: 0, name: "Donut" }, percent: 15 }],
+    amount: 100,
+    pg: 30,
+    vg: 70,
+    nicotineStrength: 2,
+    flavors: [{ flavor: { id: 1, name: "Donut" }, percent: 15 }],
   },
   {
-    id: 4,
+    id: "4",
     name: "Pure donut",
-    desiredPG: 30,
-    desiredVG: 70,
-    flavors: [{ flavor: { id: 0, name: "Donut" }, percent: 15 }],
+    amount: 100,
+    pg: 30,
+    vg: 70,
+    nicotineStrength: 2,
+    flavors: [{ flavor: { id: 1, name: "Donut" }, percent: 15 }],
   },
   {
-    id: 5,
+    id: "5",
     name: "Pure donut",
-    desiredPG: 30,
-    desiredVG: 70,
-    flavors: [{ flavor: { id: 0, name: "Donut" }, percent: 15 }],
+    amount: 100,
+    pg: 30,
+    vg: 70,
+    nicotineStrength: 2,
+    flavors: [{ flavor: { id: 1, name: "Donut" }, percent: 15 }],
   },
   {
-    id: 6,
+    id: "6",
     name: "Pure donut",
-    desiredPG: 30,
-    desiredVG: 70,
-    flavors: [{ flavor: { id: 0, name: "Donut" }, percent: 15 }],
+    amount: 100,
+    pg: 30,
+    vg: 70,
+    nicotineStrength: 2,
+    flavors: [{ flavor: { id: 1, name: "Donut" }, percent: 15 }],
   },
 ];
 
@@ -67,7 +77,7 @@ export function getRecipe(id) {
 }
 
 export function createRecipe(recipe) {
-  const newRecipe = { ...recipe, id };
+  const newRecipe = { ...recipe, id: id.toString() };
   recipes = [...recipes, newRecipe];
   id++;
   return Promise.resolve(newRecipe);

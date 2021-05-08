@@ -21,20 +21,27 @@ function SelectControl(props) {
     control,
   });
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const { onChange, value } = field;
+
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   useEffect(() => {
-    const newIndex = props.values.findIndex((v) => compare(v, field.value));
+    const newIndex = props.values.findIndex((v) => compare(v, value));
+
+    if (selectedIndex === -1 && props.values.length > 0) {
+      onChange(props.values[0]);
+      return;
+    }
 
     if (selectedIndex !== newIndex) {
       setSelectedIndex(newIndex);
     }
-  }, [field.value, props.values]);
+  }, [compare, value, onChange, props.values, selectedIndex]);
 
   function onSelect(e) {
     const index = e.target.value;
     setSelectedIndex(index);
-    field.onChange(props.values[index]);
+    onChange(props.values[index]);
   }
 
   return (

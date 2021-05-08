@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Button,
   CircularProgress,
@@ -6,7 +7,13 @@ import {
   Heading,
   HStack,
   LightMode,
+  Table,
   Text,
+  Tr,
+  Th,
+  Td,
+  Thead,
+  Tbody,
   VStack,
 } from "@chakra-ui/react";
 import Pager from "components/Pager";
@@ -20,13 +27,16 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useRecipeContext } from "./RecipeContext";
+import { calculate } from "calculations";
+import DatepickerControl from "components/form/DatepickerControl";
+import { today } from "utils/date";
 
-const EditRecipeContext = React.createContext(null);
+const RecipeCreateContext = React.createContext(null);
 
 function Header() {
-  const { page } = useContext(EditRecipeContext);
+  const { page } = useContext(RecipeCreateContext);
 
   function getHeader() {
     if (page === 0) {
@@ -106,8 +116,18 @@ function OverallPage() {
       <NumberInputControl
         control={control}
         rules={{ required: true }}
+        label="Total amount"
+        name="amount"
+        placeholder="Total amount..."
+        min={0}
+        max={100}
+      />
+
+      <NumberInputControl
+        control={control}
+        rules={{ required: true }}
         label="Desired PG"
-        name="desiredPG"
+        name="pg"
         placeholder="Desired PG..."
         min={0}
         max={100}
@@ -117,10 +137,20 @@ function OverallPage() {
         control={control}
         rules={{ required: true }}
         label="Desired VG"
-        name="desiredVG"
+        name="vg"
         placeholder="Desired VG..."
         min={0}
         max={100}
+      />
+
+      <DatepickerControl
+        control={control}
+        rules={{ required: true }}
+        label="Steep until"
+        type="date"
+        name="steepUntil"
+        placeholder="Steep until..."
+        min={today()}
       />
     </VStack>
   );
@@ -128,6 +158,7 @@ function OverallPage() {
 
 function NicotinePage() {
   const { control } = useFormContext();
+  const { nicotineList } = useContext(RecipeCreateContext);
 
   return (
     <VStack flex={1} width="full" paddingX="4" spacing="4">
@@ -144,10 +175,12 @@ function NicotinePage() {
         control={control}
         name="nicotine"
         label="Nicotine"
-        values={[]}
-        compare={(f1, f2) => f1.id === f2.id}
+        values={nicotineList}
+        compare={(f1, f2) => f1?.id === f2?.id}
       >
-        {(nicotine) => `${nicotine.strength}, ${nicotine.vg}/${nicotine.pg}`}
+        {(nicotine) =>
+          `${nicotine.strength}mg, ${nicotine.vg}VG/${nicotine.pg}PG`
+        }
       </SelectControl>
     </VStack>
   );
@@ -160,7 +193,7 @@ function FlavorPage() {
     name: "flavors",
   });
 
-  const { flavors } = useContext(EditRecipeContext);
+  const { flavors } = useContext(RecipeCreateContext);
 
   function addFlavor() {
     append({ flavor: flavors[0], percent: 10 });
@@ -212,6 +245,8 @@ function FlavorPage() {
 }
 
 function SummaryPage() {
+  const { summary } = useContext(RecipeCreateContext);
+
   return (
     <VStack
       flex={1}
@@ -220,13 +255,30 @@ function SummaryPage() {
       spacing="4"
       alignItems="flex-end"
     >
-      <Text>yeah</Text>
+      <Table variant="simple">
+        <Thead>
+          <Tr>
+            <Th>Name</Th>
+            <Th isNumeric>ml</Th>
+            <Th isNumeric>%</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {summary.map((summaryItem) => (
+            <Tr key={summaryItem.name}>
+              <Td>{summaryItem.name}</Td>
+              <Td isNumeric>{summaryItem.amount.toFixed(2)}</Td>
+              <Td isNumeric>{summaryItem.percent.toFixed(2)}</Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
     </VStack>
   );
 }
 
 function Pages() {
-  const { page } = useContext(EditRecipeContext);
+  const { page } = useContext(RecipeCreateContext);
 
   return (
     <Pager page={page} style={{ flex: 1 }}>
@@ -239,7 +291,7 @@ function Pages() {
 }
 
 function PageControls() {
-  const { page, prevPage, nextPage } = useContext(EditRecipeContext);
+  const { page, prevPage, nextPage, submit } = useContext(RecipeCreateContext);
 
   return (
     <HStack paddingX="4" paddingBottom="4" width="full">
@@ -247,15 +299,21 @@ function PageControls() {
         Back
       </Button>
 
-      {page < 3 && (
+      {page < 2 && (
         <Button flex="1" onClick={nextPage}>
+          Next
+        </Button>
+      )}
+
+      {page === 2 && (
+        <Button flex="1" type="submit">
           Next
         </Button>
       )}
 
       {page === 3 && (
         <LightMode>
-          <Button flex="1" type="submit" colorScheme="teal">
+          <Button flex="1" colorScheme="teal" onClick={submit}>
             Finish
           </Button>
         </LightMode>
@@ -264,7 +322,7 @@ function PageControls() {
   );
 }
 
-function RecipeEdit() {
+function RecipeCreate() {
   return (
     <VStack flex={1} overflow="auto" spacing="4">
       <Header />
@@ -274,26 +332,48 @@ function RecipeEdit() {
   );
 }
 
-function RecipeEditContainer() {
-  const [page, setPage] = useState(0);
-  const { state = {} } = useLocation();
-  const { recipe = {} } = state;
-  const { recipeService, consumablesService } = useRecipeContext();
-  const [flavors, setFlavors] = useState([]);
+function useNicotineList() {
+  return useConsumableType("nicotine");
+}
 
+function useFlavorList() {
+  return useConsumableType("flavor");
+}
+
+function useConsumableType(type) {
+  const [flavors, setFlavors] = useState([]);
+  const { consumablesService } = useRecipeContext();
+
+  useEffect(() => {
+    (async () => {
+      const flavors = await consumablesService.getConsumablesByType(type);
+      setFlavors(flavors);
+    })();
+  }, [consumablesService, type]);
+
+  return flavors;
+}
+
+function RecipeCreateContainer() {
+  const [page, setPage] = useState(0);
+  const [summary, setSummary] = useState([]);
+  const [recipe, setRecipe] = useState();
+  const { recipeService } = useRecipeContext();
+  const flavors = useFlavorList();
+  const nicotineList = useNicotineList();
+  const history = useHistory();
   const methods = useForm({
     defaultValues: {
-      name: recipe.name ?? "",
-      desiredPG: recipe.desiredPG ?? 30,
-      desiredVG: recipe.desiredVG ?? 70,
-      nicotineStrength: recipe.nicotineStrength ?? 2,
-      nicotinePG: recipe.nicotinePG ?? 50,
-      nicotineVG: recipe.nicotineVG ?? 50,
-      flavors: recipe.flavors ?? [],
+      name: "",
+      amount: 100,
+      pg: 30,
+      vg: 70,
+      steepUntil: new Date(),
+      nicotine: null,
+      nicotineStrength: 2,
+      flavors: [],
     },
   });
-  const isNew = !recipe.id;
-  const history = useHistory();
 
   function nextPage() {
     if (page > 2) {
@@ -311,33 +391,39 @@ function RecipeEditContainer() {
     setPage(page - 1);
   }
 
-  useEffect(() => {
-    (async () => {
-      const flavors = await consumablesService.getConsumablesByType("flavor");
-      setFlavors(flavors);
-    })();
-  }, [consumablesService]);
+  function calculateSummary(recipe) {
+    setSummary(calculate(recipe));
+    setRecipe(recipe);
+    nextPage();
+  }
 
-  async function submit(newRecipe) {
-    const saveFn = isNew
-      ? recipeService.createRecipe
-      : recipeService.updateRecipe;
-    const savedRecipe = await saveFn({ ...newRecipe, id: recipe.id });
+  async function submit() {
+    const savedRecipe = await recipeService.createRecipe(recipe);
     history.push(`/recipe/${savedRecipe.id}`, { recipe: savedRecipe });
   }
 
   return (
-    <EditRecipeContext.Provider value={{ page, nextPage, prevPage, flavors }}>
+    <RecipeCreateContext.Provider
+      value={{
+        page,
+        nextPage,
+        prevPage,
+        flavors,
+        nicotineList,
+        summary,
+        submit,
+      }}
+    >
       <FormProvider {...methods}>
         <form
-          onSubmit={methods.handleSubmit(submit)}
+          onSubmit={methods.handleSubmit(calculateSummary)}
           style={{ display: "flex", flex: "1" }}
         >
-          <RecipeEdit />
+          <RecipeCreate />
         </form>
       </FormProvider>
-    </EditRecipeContext.Provider>
+    </RecipeCreateContext.Provider>
   );
 }
 
-export default RecipeEditContainer;
+export default RecipeCreateContainer;

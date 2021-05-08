@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/button";
-import { Heading, Tag, Wrap, Text, LightMode } from "@chakra-ui/react";
+import { Heading, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { VStack, HStack } from "@chakra-ui/layout";
