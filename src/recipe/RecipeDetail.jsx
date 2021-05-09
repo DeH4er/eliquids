@@ -78,11 +78,11 @@ function RecipeDetail({ recipe, summary }) {
       </Wrap>
 
       <Accordion defaultIndex={[0]} allowMultiple width="full">
-        <AccordionItem>
+        <AccordionItem border="0">
           <h2>
-            <AccordionButton>
+            <AccordionButton paddingX="0">
               <Box flex="1" textAlign="left">
-                <Heading size="xs">Nicotine</Heading>
+                <Heading size="md">Nicotine</Heading>
               </Box>
               <AccordionIcon />
             </AccordionButton>
@@ -92,11 +92,11 @@ function RecipeDetail({ recipe, summary }) {
           </AccordionPanel>
         </AccordionItem>
 
-        <AccordionItem>
+        <AccordionItem border="0">
           <h2>
-            <AccordionButton>
+            <AccordionButton paddingX="0">
               <Box flex="1" textAlign="left">
-                <Heading size="xs">Flavors</Heading>
+                <Heading size="md">Flavors</Heading>
               </Box>
               <AccordionIcon />
             </AccordionButton>
@@ -106,11 +106,11 @@ function RecipeDetail({ recipe, summary }) {
           </AccordionPanel>
         </AccordionItem>
 
-        <AccordionItem>
+        <AccordionItem border="0">
           <h2>
-            <AccordionButton>
+            <AccordionButton paddingX="0">
               <Box flex="1" textAlign="left">
-                <Heading size="xs">Summary</Heading>
+                <Heading size="md">Summary</Heading>
               </Box>
               <AccordionIcon />
             </AccordionButton>
