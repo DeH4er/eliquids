@@ -1,4 +1,4 @@
-let id = 4;
+let id = 5;
 
 let consumables = [
   {
@@ -48,8 +48,8 @@ function getConsumable(id) {
 }
 
 function createConsumable(consumable) {
-  consumables = [...consumables, { ...consumable, id }];
   id++;
+  consumables = [...consumables, { ...consumable, id: id.toString() }];
   return Promise.resolve({ ...consumable, id: id.toString() });
 }
 

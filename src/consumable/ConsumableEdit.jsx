@@ -147,10 +147,35 @@ function useLoadConsumable(defaultValues) {
   return methods;
 }
 
+function getDefaultValues(type) {
+  switch (type) {
+    case "flavor":
+      return {
+        flavorType: "PG",
+        name: "",
+        amount: 10,
+      };
+    case "nicotine":
+      return {
+        vg: 50,
+        pg: 50,
+        amount: 10,
+        strength: 20,
+      };
+    case "pg":
+    case "vg":
+      return {
+        amount: 1000,
+      };
+    default:
+      return {};
+  }
+}
+
 function ConsumableEditContainer() {
   const { consumableService } = useConsumableContext();
   const { type } = useParams();
-  const methods = useLoadConsumable(type);
+  const methods = useLoadConsumable(getDefaultValues(type));
   const history = useHistory();
   const isNew = useIsNew();
 
