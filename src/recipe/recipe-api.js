@@ -7,9 +7,15 @@ let recipes = [
     pg: 30,
     vg: 70,
     nicotineStrength: 2,
+    nicotine: {
+      vg: 50,
+      pg: 50,
+      strength: 18,
+      amount: 10,
+    },
     flavors: [
-      { flavor: { id: 1, name: "Melon" }, percent: 15 },
-      { flavor: { id: 4, name: "Donut" }, percent: 3 },
+      { flavor: { id: 1, name: "Melon", flavorType: "PG" }, percent: 15 },
+      { flavor: { id: 4, name: "Donut", flavorType: "VG" }, percent: 3 },
     ],
   },
   {

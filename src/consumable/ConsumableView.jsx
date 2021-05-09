@@ -17,7 +17,6 @@ function ConsumableView() {
         <Route path={`${path}/list`}>
           <ConsumableList />
         </Route>
-
         <Route path={`${path}/:type/create`}>
           <ConsumableEdit />
         </Route>

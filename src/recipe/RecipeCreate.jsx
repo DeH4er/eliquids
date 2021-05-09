@@ -7,19 +7,12 @@ import {
   Heading,
   HStack,
   LightMode,
-  Table,
   Text,
-  Tr,
-  Th,
-  Td,
-  Thead,
-  Tbody,
   VStack,
 } from "@chakra-ui/react";
+import { calculate } from "calculations";
+import DatepickerControl from "components/form/DatepickerControl";
 import Pager from "components/Pager";
-import InputControl from "../components/form/InputControl";
-import NumberInputControl from "../components/form/NumberInputControl";
-import SelectControl from "../components/form/SelectControl";
 import React, { useContext, useEffect, useState } from "react";
 import {
   FormProvider,
@@ -28,10 +21,12 @@ import {
   useFormContext,
 } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import { useRecipeContext } from "./RecipeContext";
-import { calculate } from "calculations";
-import DatepickerControl from "components/form/DatepickerControl";
 import { today } from "utils/date";
+import InputControl from "../components/form/InputControl";
+import NumberInputControl from "../components/form/NumberInputControl";
+import SelectControl from "../components/form/SelectControl";
+import RecipeSummary from "./components/RecipeSummary";
+import { useRecipeContext } from "./RecipeContext";
 
 const RecipeCreateContext = React.createContext(null);
 
@@ -255,24 +250,7 @@ function SummaryPage() {
       spacing="4"
       alignItems="flex-end"
     >
-      <Table variant="simple">
-        <Thead>
-          <Tr>
-            <Th>Name</Th>
-            <Th isNumeric>ml</Th>
-            <Th isNumeric>%</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {summary.map((summaryItem) => (
-            <Tr key={summaryItem.name}>
-              <Td>{summaryItem.name}</Td>
-              <Td isNumeric>{summaryItem.amount.toFixed(2)}</Td>
-              <Td isNumeric>{summaryItem.percent.toFixed(2)}</Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
+      <RecipeSummary summary={summary} />
     </VStack>
   );
 }
