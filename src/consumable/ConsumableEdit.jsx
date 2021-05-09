@@ -1,214 +1,158 @@
-import React from "react";
 import { Button, Heading, LightMode, VStack } from "@chakra-ui/react";
 import InputControl from "components/form/InputControl";
 import NumberInputControl from "components/form/NumberInputControl";
 import RadioControl from "components/form/RadioControl";
-import SelectControl from "components/form/SelectControl";
-import { useForm, useWatch } from "react-hook-form";
+import React, { useEffect } from "react";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { useHistory } from "react-router";
+import { useParams } from "react-router-dom";
 import { useConsumableContext } from "./ConsumableContext";
-import { useHistory, useLocation } from "react-router";
 
-function FlavorEdit({ onSubmit, consumable }) {
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      name: consumable.name ?? "",
-      amount: consumable.amount ?? 10,
-      flavorType: consumable.type ?? "PG",
-    },
-  });
+function FlavorEdit() {
+  const { control } = useFormContext();
 
   return (
     <VStack width="full" alignItems="start" spacing="4" flex="1">
-      <VStack width="full" alignItems="start" spacing="4" flex="1">
-        <InputControl
-          control={control}
-          name="name"
-          label="Name"
-          placeholder="Name..."
-          rules={{ required: true }}
-        />
+      <InputControl
+        control={control}
+        name="name"
+        label="Name"
+        placeholder="Name..."
+        rules={{ required: true }}
+      />
 
-        <NumberInputControl
-          control={control}
-          name="amount"
-          label="Amount (ml)"
-          placeholder="Amount..."
-          min={0}
-          rules={{ required: true }}
-        />
+      <NumberInputControl
+        control={control}
+        name="amount"
+        label="Amount (ml)"
+        placeholder="Amount..."
+        min={0}
+        rules={{ required: true }}
+      />
 
-        <RadioControl
-          control={control}
-          name="flavorType"
-          label="Flavor type"
-          placeholder="Flavor type..."
-          values={[
-            { value: "PG", label: "PG" },
-            { value: "VG", label: "VG" },
-          ]}
-        />
-      </VStack>
-
-      <LightMode>
-        <Button
-          colorScheme="teal"
-          width="full"
-          onClick={handleSubmit(onSubmit)}
-        >
-          Finish
-        </Button>
-      </LightMode>
+      <RadioControl
+        control={control}
+        name="flavorType"
+        label="Flavor type"
+        placeholder="Flavor type..."
+        values={[
+          { value: "PG", label: "PG" },
+          { value: "VG", label: "VG" },
+        ]}
+      />
     </VStack>
   );
 }
 
-function NicotineEdit({ onSubmit, consumable }) {
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      amount: consumable.amount ?? 10,
-      pg: consumable.pg ?? 50,
-      vg: consumable.vg ?? 50,
-      strength: consumable.strength ?? 18,
-    },
-  });
+function NicotineEdit() {
+  const { control } = useFormContext();
 
   return (
     <VStack width="full" alignItems="start" spacing="4" flex="1">
-      <VStack width="full" alignItems="start" spacing="4" flex="1">
-        <NumberInputControl
-          control={control}
-          name="amount"
-          label="Amount (ml)"
-          placeholder="Amount..."
-          min={0}
-          rules={{ required: true }}
-        />
+      <NumberInputControl
+        control={control}
+        name="amount"
+        label="Amount (ml)"
+        placeholder="Amount..."
+        min={0}
+        rules={{ required: true }}
+      />
 
-        <NumberInputControl
-          control={control}
-          name="strength"
-          label="Strength (mg)"
-          placeholder="Strength..."
-          min={0}
-          rules={{ required: true }}
-        />
+      <NumberInputControl
+        control={control}
+        name="strength"
+        label="Strength (mg)"
+        placeholder="Strength..."
+        min={0}
+        rules={{ required: true }}
+      />
 
-        <NumberInputControl
-          control={control}
-          name="pg"
-          label="VG (%)"
-          placeholder="PG..."
-          min={0}
-          max={100}
-          rules={{ required: true }}
-        />
+      <NumberInputControl
+        control={control}
+        name="pg"
+        label="VG (%)"
+        placeholder="PG..."
+        min={0}
+        max={100}
+        rules={{ required: true }}
+      />
 
-        <NumberInputControl
-          control={control}
-          name="vg"
-          label="VG (%)"
-          placeholder="VG..."
-          min={0}
-          max={100}
-          rules={{ required: true }}
-        />
-      </VStack>
-
-      <LightMode>
-        <Button
-          colorScheme="teal"
-          width="full"
-          onClick={handleSubmit(onSubmit)}
-        >
-          Finish
-        </Button>
-      </LightMode>
+      <NumberInputControl
+        control={control}
+        name="vg"
+        label="VG (%)"
+        placeholder="VG..."
+        min={0}
+        max={100}
+        rules={{ required: true }}
+      />
     </VStack>
   );
 }
 
-function PGEdit({ onSubmit, consumable }) {
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      amount: consumable.amount ?? 10,
-    },
-  });
+function PGEdit() {
+  const { control } = useFormContext();
 
   return (
     <VStack width="full" alignItems="start" spacing="4" flex="1">
-      <VStack width="full" alignItems="start" spacing="4" flex="1">
-        <NumberInputControl
-          control={control}
-          name="amount"
-          label="Amount (ml)"
-          placeholder="Amount..."
-          min={0}
-          rules={{ required: true }}
-        />
-      </VStack>
-
-      <LightMode>
-        <Button
-          colorScheme="teal"
-          width="full"
-          onClick={handleSubmit(onSubmit)}
-        >
-          Finish
-        </Button>
-      </LightMode>
+      <NumberInputControl
+        control={control}
+        name="amount"
+        label="Amount (ml)"
+        placeholder="Amount..."
+        min={0}
+        rules={{ required: true }}
+      />
     </VStack>
   );
 }
 
-function VGEdit({ onSubmit, consumable }) {
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      amount: consumable.amount ?? 10,
-    },
-  });
+function VGEdit() {
+  const { control } = useFormContext();
 
   return (
     <VStack width="full" alignItems="start" spacing="4" flex="1">
-      <VStack width="full" alignItems="start" spacing="4" flex="1">
-        <NumberInputControl
-          control={control}
-          name="amount"
-          label="Amount (ml)"
-          placeholder="Amount..."
-          min={0}
-          rules={{ required: true }}
-        />
-      </VStack>
-
-      <LightMode>
-        <Button
-          colorScheme="teal"
-          width="full"
-          onClick={handleSubmit(onSubmit)}
-        >
-          Finish
-        </Button>
-      </LightMode>
+      <NumberInputControl
+        control={control}
+        name="amount"
+        label="Amount (ml)"
+        placeholder="Amount..."
+        min={0}
+        rules={{ required: true }}
+      />
     </VStack>
   );
+}
+
+function useIsNew() {
+  const { id } = useParams();
+  return !id;
+}
+
+function useLoadConsumable(defaultValues) {
+  const methods = useForm({ defaultValues });
+
+  const { reset } = methods;
+  const { consumableService } = useConsumableContext();
+  const { id } = useParams();
+  const isNew = useIsNew();
+
+  useEffect(() => {
+    (async () => {
+      if (!isNew) {
+        reset(await consumableService.getConsumable(id));
+      }
+    })();
+  }, [reset, id, consumableService, isNew]);
+  return methods;
 }
 
 function ConsumableEditContainer() {
-  const { state = {} } = useLocation();
-  const { consumable = {} } = state;
   const { consumableService } = useConsumableContext();
+  const { type } = useParams();
+  const methods = useLoadConsumable(type);
   const history = useHistory();
-
-  const isNew = !consumable.id;
-
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      ...consumable,
-      type: consumable?.type ?? "flavor",
-    },
-  });
-
-  const { type } = useWatch({ control });
+  const isNew = useIsNew();
 
   async function submit(consumableData) {
     const saveFn = isNew
@@ -218,53 +162,35 @@ function ConsumableEditContainer() {
     const savedConsumable = await saveFn({
       ...consumableData,
       type,
-      id: consumable.id,
     });
     history.push(`/consumable/${savedConsumable.id}`, {
       consumable: savedConsumable,
     });
   }
 
-  const consumableTypes = [
-    { key: "flavor", label: "Flavor" },
-    { key: "nicotine", label: "Nicotine" },
-    { key: "pg", label: "PG" },
-    { key: "vg", label: "VG" },
-  ];
-
   return (
-    <VStack padding="4" spacing="4" alignItems="start" flex="1">
-      <Heading size="xl">{isNew ? "Create" : "Edit"} consumable</Heading>
-
+    <FormProvider {...methods}>
       <form
-        onSubmit={handleSubmit(submit)}
-        style={{ width: "100%", flex: 1, display: "flex" }}
+        onSubmit={methods.handleSubmit(submit)}
+        style={{ flex: 1, display: "flex" }}
       >
-        <VStack spacing="4" alignItems="start" flex="1">
-          <SelectControl
-            label="Consumable type"
-            control={control}
-            values={consumableTypes.map((c) => c.key)}
-            name="type"
-          >
-            {(key) => consumableTypes.find((c) => c.key === key).label}
-          </SelectControl>
+        <VStack padding="4" spacing="4" alignItems="start" flex="1">
+          <Heading size="xl">
+            {isNew ? "Create" : "Edit"} {type}
+          </Heading>
+          {type === "flavor" && <FlavorEdit />}
+          {type === "nicotine" && <NicotineEdit />}
+          {type === "pg" && <PGEdit />}
+          {type === "vg" && <VGEdit />}
 
-          {type === "flavor" && (
-            <FlavorEdit onSubmit={submit} consumable={consumable} />
-          )}
-          {type === "nicotine" && (
-            <NicotineEdit onSubmit={submit} consumable={consumable} />
-          )}
-          {type === "pg" && (
-            <PGEdit onSubmit={submit} consumable={consumable} />
-          )}
-          {type === "vg" && (
-            <VGEdit onSubmit={submit} consumable={consumable} />
-          )}
+          <LightMode>
+            <Button colorScheme="teal" width="full" type="submit">
+              Finish
+            </Button>
+          </LightMode>
         </VStack>
       </form>
-    </VStack>
+    </FormProvider>
   );
 }
 

@@ -2,7 +2,7 @@ let id = 4;
 
 let consumables = [
   {
-    id: 0,
+    id: "0",
     type: "nicotine",
     vg: 50,
     pg: 50,
@@ -10,24 +10,24 @@ let consumables = [
     amount: 10,
   },
   {
-    id: 1,
+    id: "1",
     type: "flavor",
     flavorType: "PG",
     name: "Melon",
     amount: 10,
   },
   {
-    id: 2,
+    id: "2",
     type: "pg",
     amount: 1000,
   },
   {
-    id: 3,
+    id: "3",
     type: "vg",
     amount: 1000,
   },
   {
-    id: 4,
+    id: "4",
     type: "flavor",
     flavorType: "PG",
     name: "Lemon Cake",
@@ -43,22 +43,27 @@ function getConsumablesByType(type) {
   return Promise.resolve(consumables.filter((c) => c.type === type));
 }
 
+function getConsumable(id) {
+  return Promise.resolve(consumables.find((c) => c.id === id));
+}
+
 function createConsumable(consumable) {
   consumables = [...consumables, { ...consumable, id }];
   id++;
-  return Promise.resolve({ ...consumable, id });
+  return Promise.resolve({ ...consumable, id: id.toString() });
 }
 
 function editConsumable(consumable) {
   consumables = consumables.map((c) =>
     c.id === consumable.id ? consumable : c
   );
-  return Promise.resolve({ ...consumable, id });
+  return Promise.resolve({ ...consumable });
 }
 
 const Service = {
   getConsumables,
   getConsumablesByType,
+  getConsumable,
   createConsumable,
   editConsumable,
 };

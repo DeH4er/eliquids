@@ -1,9 +1,9 @@
 import React from "react";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import ConsumableProvider from "./ConsumableContext";
+import ConsumableDetail from "./ConsumableDetail";
 import ConsumableEdit from "./ConsumableEdit";
 import ConsumableList from "./ConsumableList";
-import ConsumableDetail from "./ConsumableDetail";
 
 function ConsumableView() {
   const { path } = useRouteMatch();
@@ -17,10 +17,11 @@ function ConsumableView() {
         <Route path={`${path}/list`}>
           <ConsumableList />
         </Route>
-        <Route path={`${path}/create`}>
+
+        <Route path={`${path}/:type/create`}>
           <ConsumableEdit />
         </Route>
-        <Route path={`${path}/:id/edit`}>
+        <Route path={`${path}/:type/:id/edit`}>
           <ConsumableEdit />
         </Route>
         <Route exact path={`${path}/:id`}>

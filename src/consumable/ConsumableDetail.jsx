@@ -1,8 +1,9 @@
 import { Button } from "@chakra-ui/button";
-import { Heading, Text } from "@chakra-ui/react";
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Center, CircularProgress, Heading, Text } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { VStack, HStack } from "@chakra-ui/layout";
+import { useConsumableContext } from "./ConsumableContext";
 
 function getHeader(consumable) {
   switch (consumable.type) {
@@ -33,6 +34,14 @@ function getDescription(consumable) {
 }
 
 function ConsumableDetail({ consumable }) {
+  if (!consumable) {
+    return (
+      <Center flex="1">
+        <CircularProgress isIndeterminate />
+      </Center>
+    );
+  }
+
   return (
     <VStack padding="4" alignItems="start" spacing="4">
       <HStack justifyContent="space-between" width="full">
@@ -41,10 +50,9 @@ function ConsumableDetail({ consumable }) {
         </Heading>
 
         <Link
-          to={{
-            pathname: `/consumable/${consumable.id}/edit`,
-            state: { consumable },
-          }}
+          to={`/consumable/${consumable.type.toLowerCase()}/${
+            consumable.id
+          }/edit`}
         >
           <Button>Edit</Button>
         </Link>
@@ -63,11 +71,22 @@ function ConsumableDetail({ consumable }) {
   );
 }
 
-function ConsumableDetailContainer() {
-  const {
-    state: { consumable },
-  } = useLocation();
+function useLoadConsumable() {
+  const { id } = useParams();
+  const [consumable, setConsumable] = useState();
+  const { consumableService } = useConsumableContext();
 
+  useEffect(() => {
+    (async () => {
+      setConsumable(await consumableService.getConsumable(id));
+    })();
+  }, [consumableService, id]);
+
+  return consumable;
+}
+
+function ConsumableDetailContainer() {
+  const consumable = useLoadConsumable();
   return <ConsumableDetail consumable={consumable} />;
 }
 

@@ -27,7 +27,7 @@ function RecipeListContainer() {
   }, [recipeService]);
 
   function onRecipeClick(recipe) {
-    history.push(`/recipe/${recipe.id}`, { recipe });
+    history.push(`/recipe/${recipe.id}`);
   }
 
   return (

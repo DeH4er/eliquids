@@ -30,6 +30,7 @@ function SelectControl(props) {
 
     if (selectedIndex === -1 && props.values.length > 0) {
       onChange(props.values[0]);
+      setSelectedIndex(0);
       return;
     }
 

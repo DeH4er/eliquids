@@ -7,10 +7,58 @@ import {
   Button,
   HStack,
   LightMode,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  SimpleGrid,
+  Center,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useConsumableContext } from "./ConsumableContext";
+
+function AddConsumable() {
+  const [modalOpen, setModalOpen] = useState(false);
+  return (
+    <>
+      <LightMode>
+        <Button colorScheme="teal" onClick={() => setModalOpen(true)}>
+          <AddIcon />
+        </Button>
+      </LightMode>
+
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} isCentered>
+        <ModalOverlay></ModalOverlay>
+        <ModalContent margin="4" marginY="auto">
+          <ModalHeader>Select consumable type</ModalHeader>
+          <ModalBody paddingX="4" paddingBottom="4">
+            <SimpleGrid columns={2} spacing={4}>
+              {[
+                { type: "flavor", label: "Flavor" },
+                { type: "nicotine", label: "Nicotine" },
+                { type: "pg", label: "PG" },
+                { type: "vg", label: "VG" },
+              ].map(({ label, type }) => (
+                <Link to={`/consumable/${type}/create`} key={type}>
+                  <Center
+                    height="80px"
+                    borderColor="gray.600"
+                    borderWidth="1px"
+                    borderRadius="4"
+                  >
+                    <Text fontWeight="bold">{label}</Text>
+                  </Center>
+                </Link>
+              ))}
+            </SimpleGrid>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
 
 function Consumable({ consumable }) {
   function getHeader() {
@@ -66,7 +114,7 @@ function ConsumableListContainer() {
   }, [consumableService]);
 
   function onConsumableClick(consumable) {
-    history.push(`/consumable/${consumable.id}`, { consumable });
+    history.push(`/consumable/${consumable.id}`);
   }
 
   return (
@@ -75,13 +123,8 @@ function ConsumableListContainer() {
         <Heading size="xl" width="full">
           My consumables
         </Heading>
-        <Link to="/consumable/create">
-          <LightMode>
-            <Button colorScheme="teal">
-              <AddIcon />
-            </Button>
-          </LightMode>
-        </Link>
+
+        <AddConsumable />
       </HStack>
 
       <VStack
