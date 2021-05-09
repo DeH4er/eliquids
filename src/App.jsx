@@ -1,15 +1,23 @@
-import React from "react";
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import { Button, VStack } from "@chakra-ui/react";
-
-import RecipeView from "./recipe/RecipeView";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Link,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import ConsumableView from "./consumable/ConsumableView";
+import RecipeView from "./recipe/RecipeView";
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path="/">
+          <Redirect to="/home" />
+        </Route>
+        <Route path="/home">
           <VStack padding="4" spacing="4" alignItems="start">
             <Link to="/recipe">
               <Button>Recipes</Button>

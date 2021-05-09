@@ -1,6 +1,7 @@
 import { Button } from "@chakra-ui/button";
-import { HStack, VStack } from "@chakra-ui/layout";
-import { Heading, Text } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/layout";
+import { LightMode, Text } from "@chakra-ui/react";
+import HeaderBar from "components/HeaderBar";
 import Loading from "components/Loading";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -40,31 +41,30 @@ function ConsumableDetail({ consumable }) {
   }
 
   return (
-    <VStack padding="4" alignItems="start" spacing="4">
-      <HStack justifyContent="space-between" width="full">
-        <Heading size="xl" width="full">
-          {consumable.type}
-        </Heading>
-
-        <Link
-          to={`/consumable/${consumable.type.toLowerCase()}/${
-            consumable.id
-          }/edit`}
-        >
-          <Button>Edit</Button>
-        </Link>
-
-        <Link to="/consumable">
-          <Button>List</Button>
-        </Link>
-      </HStack>
-
-      <Text>
-        {[getHeader(consumable), getDescription(consumable)]
-          .filter(Boolean)
-          .join(", ")}
-      </Text>
-    </VStack>
+    <>
+      <HeaderBar
+        heading={consumable.type}
+        leftNavigation={{ to: "/consumable", label: "List" }}
+        rightAccessory={
+          <Link
+            to={`/consumable/${consumable.type.toLowerCase()}/${
+              consumable.id
+            }/edit`}
+          >
+            <LightMode>
+              <Button colorScheme="teal">Edit</Button>
+            </LightMode>
+          </Link>
+        }
+      />
+      <VStack padding="4" alignItems="start" spacing="4" paddingTop="0">
+        <Text>
+          {[getHeader(consumable), getDescription(consumable)]
+            .filter(Boolean)
+            .join(", ")}
+        </Text>
+      </VStack>
+    </>
   );
 }
 

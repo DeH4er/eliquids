@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Button,
   CircularProgress,
@@ -12,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { calculate } from "calculations";
 import DatepickerControl from "components/form/DatepickerControl";
+import HeaderBar from "components/HeaderBar";
 import Pager from "components/Pager";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -74,14 +74,14 @@ function Header() {
   }
 
   return (
-    <Flex width="full" paddingX="4" paddingTop="4">
+    <Flex width="full" paddingX="4">
       <Flex
         flexDirection="column"
         alignItems="start"
         justifyContent="center"
         flex={1}
       >
-        <Heading>{getHeader()}</Heading>
+        <Heading size="md">{getHeader()}</Heading>
         <Text opacity=".6">{getDescription()}</Text>
       </Flex>
       <CircularProgress
@@ -302,11 +302,13 @@ function PageControls() {
 
 function RecipeCreate() {
   return (
-    <VStack flex={1} overflow="auto" spacing="4">
-      <Header />
-      <Pages />
-      <PageControls />
-    </VStack>
+    <>
+      <VStack flex={1} overflow="auto" spacing="4">
+        <Header />
+        <Pages />
+        <PageControls />
+      </VStack>
+    </>
   );
 }
 
@@ -393,6 +395,10 @@ function RecipeCreateContainer() {
       }}
     >
       <FormProvider {...methods}>
+        <HeaderBar
+          heading="Create recipe"
+          leftNavigation={{ to: "/recipe", label: "List" }}
+        />
         <form
           onSubmit={methods.handleSubmit(calculateSummary)}
           style={{ display: "flex", flex: "1" }}

@@ -1,5 +1,4 @@
-import { Button } from "@chakra-ui/button";
-import { HStack, VStack } from "@chakra-ui/layout";
+import { VStack } from "@chakra-ui/layout";
 import {
   Accordion,
   AccordionButton,
@@ -13,9 +12,10 @@ import {
   Wrap,
 } from "@chakra-ui/react";
 import { calculate } from "calculations";
+import HeaderBar from "components/HeaderBar";
 import Loading from "components/Loading";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import RecipeSummary from "./components/RecipeSummary";
 import { useRecipeContext } from "./RecipeContext";
 
@@ -51,77 +51,73 @@ function RecipeDetail({ recipe, summary }) {
   }
 
   return (
-    <VStack padding="4" alignItems="start" spacing="4">
-      <HStack justifyContent="space-between" width="full">
-        <Heading size="xl" width="full">
-          {recipe.name}
-        </Heading>
-
-        <Link to="/recipe">
-          <Button>List</Button>
-        </Link>
-      </HStack>
-
-      <Wrap width="full">
-        <Tag colorScheme="teal">{recipe.amount}ml</Tag>
-        <Tag colorScheme="teal">{recipe.nicotineStrength}mg</Tag>
-        <Tag colorScheme="teal">
-          {recipe.vg}/{recipe.pg}
-        </Tag>
-      </Wrap>
-
-      <Wrap width="full">
-        {recipe.flavors.map((flavor) => (
-          <Tag key={flavor.flavor.id}>
-            {flavor.flavor.name} ({flavor.percent}%)
+    <>
+      <HeaderBar
+        leftNavigation={{ to: "/recipe", label: "List" }}
+        heading={recipe.name}
+      />
+      <VStack padding="4" alignItems="start" spacing="4">
+        <Wrap width="full">
+          <Tag colorScheme="teal">{recipe.amount}ml</Tag>
+          <Tag colorScheme="teal">{recipe.nicotineStrength}mg</Tag>
+          <Tag colorScheme="teal">
+            {recipe.vg}/{recipe.pg}
           </Tag>
-        ))}
-      </Wrap>
+        </Wrap>
 
-      <Accordion defaultIndex={[0]} allowMultiple width="full">
-        <AccordionItem border="0">
-          <h2>
-            <AccordionButton paddingX="0">
-              <Box flex="1" textAlign="left">
-                <Heading size="md">Summary</Heading>
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel>
-            <RecipeSummary summary={summary} />
-          </AccordionPanel>
-        </AccordionItem>
+        <Wrap width="full">
+          {recipe.flavors.map((flavor) => (
+            <Tag key={flavor.flavor.id}>
+              {flavor.flavor.name} ({flavor.percent}%)
+            </Tag>
+          ))}
+        </Wrap>
 
-        <AccordionItem border="0">
-          <h2>
-            <AccordionButton paddingX="0">
-              <Box flex="1" textAlign="left">
-                <Heading size="md">Nicotine</Heading>
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel>
-            <NicotineDetail nicotine={recipe.nicotine} />
-          </AccordionPanel>
-        </AccordionItem>
+        <Accordion defaultIndex={[0]} allowMultiple width="full">
+          <AccordionItem border="0">
+            <h2>
+              <AccordionButton paddingX="0">
+                <Box flex="1" textAlign="left">
+                  <Heading size="md">Summary</Heading>
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel>
+              <RecipeSummary summary={summary} />
+            </AccordionPanel>
+          </AccordionItem>
 
-        <AccordionItem border="0">
-          <h2>
-            <AccordionButton paddingX="0">
-              <Box flex="1" textAlign="left">
-                <Heading size="md">Flavors</Heading>
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel>
-            <FlavorDetails flavors={recipe.flavors} />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
-    </VStack>
+          <AccordionItem border="0">
+            <h2>
+              <AccordionButton paddingX="0">
+                <Box flex="1" textAlign="left">
+                  <Heading size="md">Nicotine</Heading>
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel>
+              <NicotineDetail nicotine={recipe.nicotine} />
+            </AccordionPanel>
+          </AccordionItem>
+
+          <AccordionItem border="0">
+            <h2>
+              <AccordionButton paddingX="0">
+                <Box flex="1" textAlign="left">
+                  <Heading size="md">Flavors</Heading>
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel>
+              <FlavorDetails flavors={recipe.flavors} />
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      </VStack>
+    </>
   );
 }
 

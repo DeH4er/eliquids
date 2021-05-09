@@ -1,20 +1,21 @@
 import { AddIcon } from "@chakra-ui/icons";
 import {
-  Heading,
-  VStack,
-  Text,
-  Tag,
   Button,
+  Center,
+  Heading,
   HStack,
   LightMode,
   Modal,
-  ModalOverlay,
+  ModalBody,
   ModalContent,
   ModalHeader,
-  ModalBody,
+  ModalOverlay,
   SimpleGrid,
-  Center,
+  Tag,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
+import HeaderBar from "components/HeaderBar";
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useConsumableContext } from "./ConsumableContext";
@@ -118,38 +119,37 @@ function ConsumableListContainer() {
   }
 
   return (
-    <VStack spacing="4" flex="1" overflow="auto">
-      <HStack width="full" padding="4" paddingBottom="0">
-        <Heading size="xl" width="full">
-          My consumables
-        </Heading>
-
-        <AddConsumable />
-      </HStack>
-
-      <VStack
-        flex="1"
-        overflow="auto"
-        width="full"
-        paddingX="4"
-        paddingBottom="4"
-      >
-        {consumables.map((consumable) => (
-          <VStack
-            key={consumable.id}
-            width="full"
-            padding="4"
-            borderColor="gray.600"
-            borderWidth="1px"
-            borderRadius="4"
-            spacing="4"
-            onClick={() => onConsumableClick(consumable)}
-          >
-            <Consumable consumable={consumable} />
-          </VStack>
-        ))}
+    <>
+      <HeaderBar
+        heading="Consumables"
+        leftNavigation={{ to: "/home", label: "Home" }}
+        rightAccessory={<AddConsumable />}
+      />
+      <VStack spacing="4" flex="1" overflow="auto">
+        <VStack
+          flex="1"
+          overflow="auto"
+          width="full"
+          paddingX="4"
+          paddingBottom="4"
+        >
+          {consumables.map((consumable) => (
+            <VStack
+              key={consumable.id}
+              width="full"
+              padding="4"
+              borderColor="gray.600"
+              borderWidth="1px"
+              borderRadius="4"
+              spacing="4"
+              onClick={() => onConsumableClick(consumable)}
+            >
+              <Consumable consumable={consumable} />
+            </VStack>
+          ))}
+        </VStack>
       </VStack>
-    </VStack>
+    </>
   );
 }
 

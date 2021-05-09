@@ -1,7 +1,8 @@
-import { Button, Heading, LightMode, VStack } from "@chakra-ui/react";
+import { Button, LightMode, VStack } from "@chakra-ui/react";
 import InputControl from "components/form/InputControl";
 import NumberInputControl from "components/form/NumberInputControl";
 import RadioControl from "components/form/RadioControl";
+import HeaderBar from "components/HeaderBar";
 import React, { useEffect } from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { useHistory } from "react-router";
@@ -195,14 +196,21 @@ function ConsumableEditContainer() {
 
   return (
     <FormProvider {...methods}>
+      <HeaderBar
+        heading={`${isNew ? "Create" : "Edit"} ${type}`}
+        leftNavigation={{ to: "/consumable", label: "List" }}
+      />
       <form
         onSubmit={methods.handleSubmit(submit)}
         style={{ flex: 1, display: "flex" }}
       >
-        <VStack padding="4" spacing="4" alignItems="start" flex="1">
-          <Heading size="xl">
-            {isNew ? "Create" : "Edit"} {type}
-          </Heading>
+        <VStack
+          padding="4"
+          spacing="4"
+          alignItems="start"
+          flex="1"
+          paddingTop="0"
+        >
           {type === "flavor" && <FlavorEdit />}
           {type === "nicotine" && <NicotineEdit />}
           {type === "pg" && <PGEdit />}
