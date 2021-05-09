@@ -270,6 +270,7 @@ function Pages() {
 
 function PageControls() {
   const { page, prevPage, nextPage, submit } = useContext(RecipeCreateContext);
+  const { trigger } = useFormContext();
 
   return (
     <HStack paddingX="4" paddingBottom="4" width="full">
@@ -277,8 +278,36 @@ function PageControls() {
         Back
       </Button>
 
-      {page < 2 && (
-        <Button flex="1" onClick={nextPage}>
+      {page === 0 && (
+        <Button
+          flex="1"
+          onClick={async () => {
+            const result = await trigger([
+              "name",
+              "amount",
+              "pg",
+              "vg",
+              "steepUntil",
+            ]);
+            if (result) {
+              nextPage();
+            }
+          }}
+        >
+          Next
+        </Button>
+      )}
+
+      {page === 1 && (
+        <Button
+          flex="1"
+          onClick={async () => {
+            const result = await trigger(["nicotineStrength", "nicotine"]);
+            if (result) {
+              nextPage();
+            }
+          }}
+        >
           Next
         </Button>
       )}
