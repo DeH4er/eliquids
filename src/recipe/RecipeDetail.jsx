@@ -65,8 +65,9 @@ function RecipeDetail({ recipe, summary }) {
       <Wrap width="full">
         <Tag colorScheme="teal">{recipe.amount}ml</Tag>
         <Tag colorScheme="teal">{recipe.nicotineStrength}mg</Tag>
-        <Tag colorScheme="teal">VG {recipe.vg}</Tag>
-        <Tag colorScheme="teal">PG {recipe.pg}</Tag>
+        <Tag colorScheme="teal">
+          {recipe.vg}/{recipe.pg}
+        </Tag>
       </Wrap>
 
       <Wrap width="full">
@@ -82,12 +83,26 @@ function RecipeDetail({ recipe, summary }) {
           <h2>
             <AccordionButton paddingX="0">
               <Box flex="1" textAlign="left">
+                <Heading size="md">Summary</Heading>
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel>
+            <RecipeSummary summary={summary} />
+          </AccordionPanel>
+        </AccordionItem>
+
+        <AccordionItem border="0">
+          <h2>
+            <AccordionButton paddingX="0">
+              <Box flex="1" textAlign="left">
                 <Heading size="md">Nicotine</Heading>
               </Box>
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          <AccordionPanel pb={4}>
+          <AccordionPanel>
             <NicotineDetail nicotine={recipe.nicotine} />
           </AccordionPanel>
         </AccordionItem>
@@ -101,22 +116,8 @@ function RecipeDetail({ recipe, summary }) {
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          <AccordionPanel pb={4}>
+          <AccordionPanel>
             <FlavorDetails flavors={recipe.flavors} />
-          </AccordionPanel>
-        </AccordionItem>
-
-        <AccordionItem border="0">
-          <h2>
-            <AccordionButton paddingX="0">
-              <Box flex="1" textAlign="left">
-                <Heading size="md">Summary</Heading>
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={0}>
-            <RecipeSummary summary={summary} />
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
