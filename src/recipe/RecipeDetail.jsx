@@ -1,10 +1,16 @@
 import { Button } from "@chakra-ui/button";
+import { HStack, VStack } from "@chakra-ui/layout";
 import { Heading, Tag, Wrap } from "@chakra-ui/react";
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { VStack, HStack } from "@chakra-ui/layout";
+import Loading from "components/Loading";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useRecipeContext } from "./RecipeContext";
 
 function RecipeDetail({ recipe }) {
+  if (!recipe) {
+    return <Loading />;
+  }
+
   return (
     <VStack padding="4" alignItems="start" spacing="4">
       <HStack justifyContent="space-between" width="full">
@@ -33,10 +39,22 @@ function RecipeDetail({ recipe }) {
   );
 }
 
+function useLoadRecipe() {
+  const [recipe, setRecipe] = useState();
+  const { recipeService } = useRecipeContext();
+  const { id } = useParams();
+
+  useEffect(() => {
+    (async () => {
+      setRecipe(await recipeService.getRecipe(id));
+    })();
+  });
+
+  return recipe;
+}
+
 function RecipeDetailContainer() {
-  const {
-    state: { recipe },
-  } = useLocation();
+  const recipe = useLoadRecipe();
 
   return <RecipeDetail recipe={recipe} />;
 }

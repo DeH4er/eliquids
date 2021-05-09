@@ -1,8 +1,9 @@
 import { Button } from "@chakra-ui/button";
-import { Center, CircularProgress, Heading, Text } from "@chakra-ui/react";
+import { HStack, VStack } from "@chakra-ui/layout";
+import { Heading, Text } from "@chakra-ui/react";
+import Loading from "components/Loading";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { VStack, HStack } from "@chakra-ui/layout";
+import { Link, useParams } from "react-router-dom";
 import { useConsumableContext } from "./ConsumableContext";
 
 function getHeader(consumable) {
@@ -35,11 +36,7 @@ function getDescription(consumable) {
 
 function ConsumableDetail({ consumable }) {
   if (!consumable) {
-    return (
-      <Center flex="1">
-        <CircularProgress isIndeterminate />
-      </Center>
-    );
+    return <Loading />;
   }
 
   return (
