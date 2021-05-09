@@ -1,4 +1,4 @@
-let id = 3;
+let id = 6;
 let recipes = [
   {
     id: "0",
@@ -83,9 +83,9 @@ export function getRecipe(id) {
 }
 
 export function createRecipe(recipe) {
+  id++;
   const newRecipe = { ...recipe, id: id.toString() };
   recipes = [...recipes, newRecipe];
-  id++;
   return Promise.resolve(newRecipe);
 }
 
