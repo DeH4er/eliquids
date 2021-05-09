@@ -33,7 +33,7 @@ function RecipeListContainer() {
   return (
     <>
       <HeaderBar
-        heading="My recipes"
+        heading="Recipes"
         leftNavigation={{ to: "/home", label: "Home" }}
         rightAccessory={
           <Link to="/recipe/create">
